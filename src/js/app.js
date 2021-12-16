@@ -1,9 +1,32 @@
+const App = {
+  web3Provider: null,
+  contracts: {},
+  accounts: ['0x0'],
 
-async function loadWeb3() {
-  if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum);
-    window.ethereum.enable();
-  }
+  initWeb3: async function () {
+    console.log('initWeb3');
+    const provider = await detectEthereumProvider();
+    if (provider) {
+      // From now on, this should always be true:
+      App.initContract(provider); // initialize your app
+    } else {
+      console.log('Please install MetaMask!');
+    }
+  },
+
+  initContract: async function (provider) {
+    console.log('initContract', provider);
+    const cert = await $.getJSON("Certificates.json");
+
+    // Instantiate a new truffle contract from the artifact
+    App.contracts.Certificates = TruffleContract(cert);
+
+    // Connect provider to interact with contract
+    await App.contracts.Certificates.setProvider(provider);
+
+    // App.listenForEvents();
+    // return App.render();
+  },
 }
 
 function updateStatus(status) {
@@ -325,6 +348,47 @@ async function loadContract() {
   ], ADDRESS);
 }
 
+async function regrec(){
+  var receiverCandidate = document.getElementById("regrec").value;
+  console.log(receiverCandidate);
+    if (receiverCandidate) {
+      App.contracts.Certificates.deployed().then(function (instance) {
+        return instance.registerIssuer(receiverCandidate, { from: App.accounts[0] });
+      })
+    }
+  }
+
+async function regrec(){
+  var receiverCandidate = document.getElementById("regrec").value;
+  console.log(receiverCandidate);
+    if (receiverCandidate) {
+      App.contracts.Certificates.deployed().then(function (instance) {
+        return instance.registerRecipient(receiverCandidate, { from: App.accounts[0] });
+      })
+    }
+  }
+  
+
+async function regcert(){
+  var registeredCandidate = document.getElementById("regcert").value;
+  console.log(registeredCandidate);
+    if (registeredCandidate) {
+      App.contracts.Certificates.deployed().then(function (instance) {
+        return instance.registerCertificate(registeredCandidate, { from: App.accounts[0] });
+      })
+    }
+  }
+  
+async function vercert(){
+  var certverify = document.getElementById("vercert").value;
+  console.log(certverify);
+    if (certverify) {
+      App.contracts.Certificates.deployed().then(function (instance) {
+        return instance.verify(certverify, { from: App.accounts[0] });
+      })
+    }
+  }
+  
 async function load() {
   await loadWeb3();
   updateStatus('Ready!');
@@ -333,7 +397,20 @@ async function load() {
 async function addIPFShash() {
   var value = document.getElementById('ipfsHash').value;
   console.log(value);
-  const account = await getCurrentAccount();
-  const IPFShash = await window.contract.methods.issueCertificate(value).send({ from: account });
-  updateStatus('Add');
+  // var account = await getCurrentAccount();
+  const account = App.accounts[0];
+  console.log(account);
+  let x = await App.contracts.Certificates.deployed()
+  x.issueCertificate('0xd9af6f09b50b9dd298997f3bfacdede179db0f14',value, {from:account})
+  // const IPFShash = await window.contract.methods.issueCertificate(value).send({ from: account });
+  updateStatus('Added');
 }
+
+$(window).load(async function () { 
+  // App.ethereumButton = document.getElementById('enableEthereumButton');
+  // App.ethereumButton.addEventListener('click', async function () {
+  //   Will Start the metamask extension
+  App.accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+  App.initWeb3();
+  // App.accounts.registerIssuer("0xFe3356f84C6B45C72D2384dF6824D9171dC6CA03", {from:App.accounts[0]})
+})

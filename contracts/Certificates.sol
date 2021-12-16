@@ -25,6 +25,7 @@ contract Certificates {
     mapping(string => bool) isVerified;
 
     // Events
+    event CertificateVerified(address indexed issuer, string _ipfsHash);
     event IssuerRegistered(address indexed issuer, string _ipfsHash);
     event RecipientRegistered(address indexed recipient, string _ipfsHash);
     event CertificateRegistered(
@@ -75,10 +76,10 @@ contract Certificates {
     function verify(string memory certificate_hash) public {
         require(isRecipient[msg.sender] == true, "Recipient not registered to verify a certificate");
         require(issuerOfCertificate[certificate_hash] != address(0), "Certificate not registered");
-        require(allRecipientOfCertificate[certificate_hash].length > 0, "Certificate not issued to any recipient");
+        // require(allRecipientOfCertificate[certificate_hash].length > 0, "Certificate not issued to any recipient");
         if(isVerified[certificate_hash] == false) {
             isVerified[certificate_hash] = true;
-            emit CertificateRegistered(msg.sender, certificate_hash);
+            emit CertificateVerified(msg.sender, certificate_hash);
         }
         isVerified[certificate_hash] = true;
     }

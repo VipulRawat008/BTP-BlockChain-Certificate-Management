@@ -1,0 +1,25 @@
+{
+  "name": "btp-blockchain-certificate-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VipulRawat008/BTP-BlockChain-Certificate-Management.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VipulRawat008/BTP-BlockChain-Certificate-Management/issues"
+  },
+  "homepage": "https://github.com/VipulRawat008/BTP-BlockChain-Certificate-Management#readme",
+  "dependencies": {
+    "lite-server": "^2.6.1",
+    "truffle": "^5.4.24",
+    "truffle-contract": "^4.0.31",
+    "web3": "^1.6.1"
+  }
+}
