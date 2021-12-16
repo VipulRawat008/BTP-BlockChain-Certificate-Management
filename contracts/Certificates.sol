@@ -14,8 +14,8 @@ contract Certificates {
 
     // Mappings
     mapping(string => address) public issuerOfCertificate;
-    mapping(address => string) public issuer;
-    mapping(address => string) recipient;
+    mapping(address => address) public issuer;
+    mapping(address => address) recipient;
     mapping(string => address[]) allRecipientOfCertificate;
     mapping(uint => Certificate) certificateIdentifier;
     mapping(address => uint[]) recipientCertificates;
@@ -25,26 +25,25 @@ contract Certificates {
     mapping(string => bool) isVerified;
 
     // Events
+    event IssuerRegistered(address indexed issuer, address indexed issuerPK);
+    event RecipientRegistered(address indexed recipient, address studentPK);
+    event CertificateRegistered(address indexed issuer, string _ipfsHash);
     event CertificateVerified(address indexed issuer, string _ipfsHash);
-    event IssuerRegistered(address indexed issuer, string _ipfsHash);
-    event RecipientRegistered(address indexed recipient, string _ipfsHash);
-    event CertificateRegistered(
-      address indexed issuer, string _ipfsHash
-    );
     event CertificateIssued(uint indexed certificate, address indexed issuer, address indexed recipient);
 
     // Functions
-    function registerIssuer(string memory issuerPK) public {
-        require((isIssuer[msg.sender] == false), "Issuer already registered");
+    function registerIssuer(address issuerPK) public {
+        // require((isIssuer[msg.sender] == true), "Illegal operation");
+        require((isIssuer[issuerPK] == false), "Issuer already registered");
         issuer[msg.sender] = issuerPK;
         isIssuer[msg.sender] = true;
         emit IssuerRegistered(msg.sender, issuerPK);
     }
 
-    function registerRecipient(string memory studentPK) public {
+    function registerRecipient(address studentPK) public {
         require(isRecipient[msg.sender] == false, "Recipient already registered");
         recipient[msg.sender] = studentPK;
-        isRecipient[msg.sender] = true;
+        isRecipient[studentPK] = true;
         emit RecipientRegistered(msg.sender, studentPK);
     }
 
@@ -88,11 +87,11 @@ contract Certificates {
         return issuerOfCertificate[_ipfsHash];
     }
 
-    function getIssuer(address _issuer) public view returns (string memory) {
+    function getIssuer(address _issuer) public view returns (address) {
         return issuer[_issuer];
     }
 
-    function getRecipient(address _recipient) public view returns (string memory) {
+    function getRecipient(address _recipient) public view returns (address) {
         return recipient[_recipient];
     }
 

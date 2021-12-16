@@ -350,6 +350,7 @@ async function loadContract() {
 
 async function regissuer(){
   var issuedCandidate = document.getElementById("regissuer").value;
+  // issuedCandidate = Web3.utils.hexToBytes(issuedCandidate);
   console.log(issuedCandidate);
     if (issuedCandidate) {
       App.contracts.Certificates.deployed().then(function (instance) {
@@ -392,10 +393,13 @@ async function vercert(){
 async function issueCert(){
   var recipCandidate = document.getElementById("recAddrs").value;
   var certHash = document.getElementById("certHash").value;
-  // console.log(registeredCandidate);
+
+  console.log(recipCandidate);
+  console.log(certHash);
+  
     if (recipCandidate && certHash) {
       App.contracts.Certificates.deployed().then(function (instance) {
-        return instance.registerCertificate(recipCandidate ,certHash, { from: App.accounts[0] });
+        return instance.issueCertificate(recipCandidate ,certHash, { from: App.accounts[0] });
       })
     }
   }
