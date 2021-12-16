@@ -348,12 +348,12 @@ async function loadContract() {
   ], ADDRESS);
 }
 
-async function regrec(){
-  var receiverCandidate = document.getElementById("regrec").value;
-  console.log(receiverCandidate);
-    if (receiverCandidate) {
+async function regissuer(){
+  var issuedCandidate = document.getElementById("regissuer").value;
+  console.log(issuedCandidate);
+    if (issuedCandidate) {
       App.contracts.Certificates.deployed().then(function (instance) {
-        return instance.registerIssuer(receiverCandidate, { from: App.accounts[0] });
+        return instance.registerIssuer(issuedCandidate, { from: App.accounts[0] });
       })
     }
   }
@@ -388,29 +388,59 @@ async function vercert(){
       })
     }
   }
+
+async function issueCert(){
+  var recipCandidate = document.getElementById("recAddrs").value;
+  var certHash = document.getElementById("certHash").value;
+  // console.log(registeredCandidate);
+    if (recipCandidate && certHash) {
+      App.contracts.Certificates.deployed().then(function (instance) {
+        return instance.registerCertificate(recipCandidate ,certHash, { from: App.accounts[0] });
+      })
+    }
+  }
+  
   
 async function load() {
   await loadWeb3();
   updateStatus('Ready!');
 }
 
-async function addIPFShash() {
-  var value = document.getElementById('ipfsHash').value;
-  console.log(value);
-  // var account = await getCurrentAccount();
-  const account = App.accounts[0];
-  console.log(account);
-  let x = await App.contracts.Certificates.deployed()
-  x.issueCertificate('0xd9af6f09b50b9dd298997f3bfacdede179db0f14',value, {from:account})
-  // const IPFShash = await window.contract.methods.issueCertificate(value).send({ from: account });
-  updateStatus('Added');
-}
+// async function addIPFShash() {
+//   var value = document.getElementById('ipfsHash').value;
+//   console.log(value);
+//   // var account = await getCurrentAccount();
+//   const account = App.accounts[0];
+//   console.log(account);
+//   let x = await App.contracts.Certificates.deployed()
+//   x.issueCertificate('0xd9af6f09b50b9dd298997f3bfacdede179db0f14',value, {from:account})
+//   // const IPFShash = await window.contract.methods.issueCertificate(value).send({ from: account });
+//   updateStatus('Added');
+// }
 
 $(window).load(async function () { 
   // App.ethereumButton = document.getElementById('enableEthereumButton');
   // App.ethereumButton.addEventListener('click', async function () {
   //   Will Start the metamask extension
   App.accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+  window.ethereum.on('accountsChanged', accounts => {
+    console.log(accounts);
+  })
   App.initWeb3();
   // App.accounts.registerIssuer("0xFe3356f84C6B45C72D2384dF6824D9171dC6CA03", {from:App.accounts[0]})
 })
+
+// let provider = window.ethereum;
+
+//     if(typeof provider !== 'undefined') {
+//       // MetaMask is installed
+//       provider.request({ method: 'eth_requestAccounts' }).then(accounts => {
+//         console.log(accounts);
+//       }).catch(error => {
+//         console.log(error);
+//       })
+
+      
+//     }
+    
+//     const web3 = new Web3(provider);

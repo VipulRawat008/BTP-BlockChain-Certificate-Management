@@ -14,13 +14,13 @@
 </head>
 <body>
   <!-- <form> -->
-    <label for="regrec">Register Issuer (Address)</label>
-    <input id="regrec" type="text" name="reckey"> 
-    <input type="submit" name="Submit1" onclick="regrec()"><br><br>
+    <label for="regissuer">Register Issuer (Address)</label>
+    <input id="regissuer" type="text" name="reckey"> 
+    <input type="submit" name="Submit1" onclick="regissuer()"><br><br>
 
-    <label for="ipfsHash">Register Recipient (Address)</label>
-    <input id="ipfsHash" type="text" name="Hash">
-    <input type="submit" name="Submit" onclick=""><br><br>
+    <label for="regrec">Register Recipient (Address)</label>
+    <input id="regrec" type="text" name="Hash">
+    <input type="submit" name="Submit" onclick="regrec()"><br><br>
     
     <label for="regcert">Register certificate</label>
     <input id="regcert" type="text" name="cert">
@@ -30,9 +30,12 @@
     <input id="vercert" type="text" name="vercert">
     <input type="submit" name="Submit3" onclick="vercert()"><br><br>
 
-    <label for="ipfsHash">Issue Certificate :-</label>
-    <input id="ipfsHash" type="text" name="Hash">
-    <input type="submit" name="Submit" onclick="addIPFShash()"><br><br>
+    <label for="issueCert"><b> Issue Certificate :-</b></label><br>
+    <label for="recAddrs">&emsp; Address of Recipient :</label>
+    <input id="recAddrs" type="text" name="recAddrs"><br><br>
+    <label for="certHash">&emsp; Certificate Hash :</label>
+    <input id="certHash" type="text" name="certHash"><br>
+    &emsp;<input type="submit" name="Submit5" onclick="issueCert()">
 
   <!-- </form> -->
   <h4 id="status"></h4>
